@@ -117,7 +117,7 @@ void lightningStrike(int pixel) {
   
   strip.setPixelColor(pixel, strip.Color(scaledWhite, scaledWhite, scaledWhite));
   strip.show();
-  delay(random(5, 80));
+  delay(random(5, 100));
   currentDataPoint++;
   currentDataPoint = currentDataPoint%NUM_Y_VALUES;
 }
