@@ -37,7 +37,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream
 //   NEO_KHZ400  400 KHz bitstream (e.g. FLORA pixels)
 //   NEO_KHZ800  800 KHz bitstream (e.g. High Density LED strip)
-int NUM_LEDS = 5;
+int NUM_LEDS = 4;
 int LED_PIN = 4;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -76,6 +76,8 @@ float (*functionPtrs[10])(); //the array of function pointers
 int NUM_FUNCTIONS = 2;
 
 void setup() {
+  // Setup the Serial connection to talk over Bluetooth
+  Serial.begin(9600);
   
   // Neopixel setup
   strip.begin();
@@ -87,7 +89,8 @@ void setup() {
 }
 
 void loop() {
-  if (random(chance) == 3) {
+  String trigger = readFromBluetooth();
+  if (trigger==String("f")) {
     int led = random(NUM_LEDS);
     for (int i = 0; i < 10; i++) {
       // Use this line to keep the lightning focused in one LED.
@@ -120,6 +123,24 @@ void lightningStrike(int pixel) {
   delay(random(5, 100));
   currentDataPoint++;
   currentDataPoint = currentDataPoint%NUM_Y_VALUES;
+}
+
+/**
+ * Read the data from the BLE, breaking on '\n' and '\r' characters.
+ */
+String readFromBluetooth() {
+  String readString = "";
+
+    while (Serial.available()) {
+    delay(10);  //small delay to allow input buffer to fill
+
+    char c = Serial.read(); //gets one byte from serial buffer
+    if (c == '\n' || c == '\r') {
+      break;
+    }
+    readString += c;
+  }
+  return readString;
 }
 
 float callFunction(int index) {
