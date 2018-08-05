@@ -71,7 +71,7 @@ int triggerWeather(String command) {
   bool strike = false;
   if (command==String("f")) {
    strike = true;
- } else if (random(100) < chance) {
+ } else if (random(chance) == 0) {
    strike = true;
  }
     if (strike) {
