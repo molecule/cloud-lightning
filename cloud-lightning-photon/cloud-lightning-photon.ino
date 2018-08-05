@@ -68,8 +68,13 @@ void loop() {
 }
 
 int triggerWeather(String command) {
-    
-    if (command==String("f")) {
+  bool strike = false;
+  if (command==String("f")) {
+   strike = true;
+ } else if (random(100) < chance) {
+   strike = true;
+ }
+    if (strike) {
         int led = random(PIXEL_COUNT);
         for (int i = 0; i < 10; i++) {
         // Use this line to keep the lightning focused in one LED.

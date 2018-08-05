@@ -89,8 +89,14 @@ void setup() {
 }
 
 void loop() {
+  bool strike = false;
   String trigger = readFromBluetooth();
   if (trigger==String("f")) {
+    strike = true;
+  } else if (random(100) < chance) {
+    strike = true;
+  }
+  if (strike) {
     int led = random(NUM_LEDS);
     for (int i = 0; i < 10; i++) {
       // Use this line to keep the lightning focused in one LED.
